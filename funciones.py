@@ -1,5 +1,7 @@
 import json
 
+from datetime import datetime
+
 ARCHIVO = "tareas.json"
 
 def cargar_tareas():
@@ -37,3 +39,14 @@ def eliminar_tarea(indice):
     if 0 <= indice < len(tareas):
         tareas.pop(indice)
         guardar_tareas(tareas)
+
+def agregar_tarea(nombre, descripcion, fecha_vencimiento=None):
+    tareas = cargar_tareas()
+    tarea = {
+        "nombre": nombre,
+        "descripcion": descripcion,
+        "completada": False,
+        "vencimiento": fecha_vencimiento
+    }
+    tareas.append(tarea)
+    guardar_tareas(tareas)
