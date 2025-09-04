@@ -1,32 +1,27 @@
 import json
+import os
 
-from datetime import datetime
-
-ARCHIVO = "tareas.json"
+archivo = "tareas.json"
 
 def cargar_tareas():
-    try:
-        with open(ARCHIVO, "r") as f:
+    if os.path.exists(archivo):
+        with open(archivo, "r") as f:
             return json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return []
+    return []
 
 def guardar_tareas(tareas):
-    with open(ARCHIVO, "w") as f:
+    with open(archivo, "w") as f:
         json.dump(tareas, f, indent=4)
 
-def agregar_tarea(nombre, descripcion):
+def agregar_tarea(nombre, descripcion="", vencimiento=""):
     tareas = cargar_tareas()
-    tareas.append({"nombre": nombre, "descripcion": descripcion, "completada": False})
+    tareas.append({
+        "nombre": nombre,
+        "descripcion": descripcion,
+        "vencimiento": vencimiento,
+        "completada": False
+    })
     guardar_tareas(tareas)
-
-def listar_tareas():
-    tareas = cargar_tareas()
-    if not tareas:
-        print("No hay tareas registradas.")
-    for i, tarea in enumerate(tareas, start=1):
-        estado = "✅" if tarea["completada"] else "❌"
-        print(f"{i}. {tarea['nombre']} - {tarea['descripcion']} [{estado}]")
 
 def completar_tarea(indice):
     tareas = cargar_tareas()
@@ -39,14 +34,3 @@ def eliminar_tarea(indice):
     if 0 <= indice < len(tareas):
         tareas.pop(indice)
         guardar_tareas(tareas)
-
-def agregar_tarea(nombre, descripcion, fecha_vencimiento=None):
-    tareas = cargar_tareas()
-    tarea = {
-        "nombre": nombre,
-        "descripcion": descripcion,
-        "completada": False,
-        "vencimiento": fecha_vencimiento
-    }
-    tareas.append(tarea)
-    guardar_tareas(tareas)
