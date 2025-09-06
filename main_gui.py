@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from tkcalendar import DateEntry
 import funciones
+from datetime import datetime
 
 tareas_filtradas = []
 
@@ -29,11 +30,26 @@ def actualizar_lista(busqueda=""):
     else:
         tareas_filtradas = tareas
 
+    hoy = datetime.now().date()
+
     for i, tarea in enumerate(tareas_filtradas, start=1):
         estado = "✅" if tarea["completada"] else "❌"
         venc = f" | Vence: {tarea['vencimiento']}" if tarea.get("vencimiento") else ""
         texto = f"{i}. {tarea['nombre']} - {tarea['descripcion']}{venc} [{estado}]"
+
         listbox.insert(tk.END, texto)
+
+        # --- Colorear según estado ---
+        if tarea["completada"]:
+            listbox.itemconfig(tk.END, fg="green")  # completada → verde
+        elif tarea.get("vencimiento"):
+            fecha_venc = datetime.strptime(tarea["vencimiento"], "%Y-%m-%d").date()
+            if fecha_venc < hoy:
+                listbox.itemconfig(tk.END, fg="red")  # vencida → rojo
+            else:
+                listbox.itemconfig(tk.END, fg="black")  # normal
+        else:
+            listbox.itemconfig(tk.END, fg="black")
 
 def completar():
     seleccion = listbox.curselection()
