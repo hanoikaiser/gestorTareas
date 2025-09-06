@@ -5,9 +5,17 @@ archivo = "tareas.json"
 
 def cargar_tareas():
     if os.path.exists(archivo):
-        with open(archivo, "r") as f:
-            return json.load(f)
+        try:
+            with open(archivo, "r") as f:
+                contenido = f.read().strip()
+                if not contenido:  # archivo vacío
+                    return []
+                return json.loads(contenido)
+        except json.JSONDecodeError:
+            # archivo corrupto → reiniciamos
+            return []
     return []
+
 
 def guardar_tareas(tareas):
     with open(archivo, "w") as f:

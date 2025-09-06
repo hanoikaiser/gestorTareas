@@ -1,0 +1,20 @@
+[
+    {
+        "nombre": "1er avance",
+        "descripcion": "Herramientas de Desarrollo",
+        "vencimiento": "2025-09-13",
+        "completada": true
+    },
+    {
+        "nombre": "2do avance",
+        "descripcion": "Herramientas de Desarrollo",
+        "vencimiento": "2025-10-04",
+        "completada": false
+    },
+    {
+        "nombre": "Tarea",
+        "descripcion": "x",
+        "vencimiento": "2025-09-06",
+        "completada": false
+    }
+]
